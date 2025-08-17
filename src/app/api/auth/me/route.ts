@@ -1,10 +1,21 @@
 import { NextResponse } from 'next/server';
-import { supabaseClient } from '@/lib/supabase-client';
+import { supabaseServerAdmin } from '@/lib/supabase-server';
 
-export async function GET() {
-  const { data, error } = await supabaseClient.auth.getUser();
+export async function GET(req: Request) {
+  // Extract token from cookie or Authorization header
+  const cookieHeader = req.headers.get('cookie') || '';
+  const match = cookieHeader.match(/sb-access-token=([^;]+)/);
+  const token =
+    match?.[1] ?? req.headers.get('authorization')?.replace('Bearer ', '') ?? null;
 
-  if (error || !data.user) {
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  const supabase = supabaseServerAdmin();
+  const { data, error } = await supabase.auth.getUser(token);
+
+  if (error || !data?.user) {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
