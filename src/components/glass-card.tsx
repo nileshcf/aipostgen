@@ -1,15 +1,22 @@
 'use client';
 import { motion } from 'framer-motion';
 
-export default function GlassCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+interface GlassCardProps {
+  title: string;
+  description: string;
+  className?: string;
+}
+
+export default function GlassCard({ title, description, className = '' }: GlassCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className={`glass p-6 ${className}`}
+      className={`glass p-6 rounded-2xl shadow-md ${className}`}
     >
-      {children}
+      <h3 className="text-xl font-semibold grad-title">{title}</h3>
+      <p className="mt-3 text-gray-600">{description}</p>
     </motion.div>
   );
 }
