@@ -1,36 +1,17 @@
 import { NextResponse } from 'next/server';
-import { supabaseServerAdmin } from '@/lib/supabase-server';
-
-function makeSetCookieHeader(name: string, value: string, maxAge = 3600, secure = false) {
-  const securePart = secure ? '; Secure' : '';
-  return `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${securePart}`;
-}
+import { supabaseClient } from '@/lib/supabase-client';
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const email = String(body.email || '').trim();
-    const password = String(body.password || '');
+  const { email, password } = await req.json();
 
-    if (!email || !password) return NextResponse.json({ error: 'Email/password required' }, { status: 400 });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    const supabase = supabaseServerAdmin();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error || !data.session) {
-      return NextResponse.json({ error: error?.message ?? 'Invalid credentials' }, { status: 401 });
-    }
-
-    const accessToken = data.session.access_token!;
-    const expiresIn = data.session.expires_in ?? 3600;
-    const res = NextResponse.json({
-      user: { id: data.user?.id, email: data.user?.email }
-    }, { status: 200 });
-
-    const cookie = makeSetCookieHeader('sb_access_token', accessToken, expiresIn, process.env.NODE_ENV === 'production');
-    res.headers.set('Set-Cookie', cookie);
-    return res;
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message || 'Server error' }, { status: 500 });
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
+
+  return NextResponse.json({ user: data.user, session: data.session }, { status: 200 });
 }
