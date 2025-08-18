@@ -21,7 +21,13 @@ export async function POST(req: Request) {
     const supabase = supabaseServerAdmin();
 
     console.log("[Auth/Register] Signing up user:", email);
-    const { data, error } = await supabase.auth.signUp({ email, password });
+   const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+          },
+        });
 
     if (error) {
       console.error("[Auth/Register] Supabase signUp error:", error.message);
