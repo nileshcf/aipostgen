@@ -2,23 +2,43 @@ import { NextResponse } from 'next/server';
 import { supabaseClient } from '@/lib/supabase-client'; // uses anon key
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  try {
+    console.log("[Auth/Login] Incoming request");
 
-  if (!email || !password) {
-    return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
+    const body = await req.json();
+    console.log("[Auth/Login] Request body:", body);
+
+    const { email, password } = body;
+
+    if (!email || !password) {
+      console.warn("[Auth/Login] Missing email or password");
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
+
+    console.log("[Auth/Login] Attempting sign in for:", email);
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error("[Auth/Login] Supabase signIn error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    console.log("[Auth/Login] User signed in successfully:", data.user?.id);
+    return NextResponse.json(
+      { user: data.user, session: data.session },
+      { status: 200 }
+    );
+  } catch (err: any) {
+    console.error("[Auth/Login] Unexpected error:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error", details: err.message },
+      { status: 500 }
+    );
   }
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
-  }
-
-  return NextResponse.json(
-    { user: data.user, session: data.session },
-    { status: 200 }
-  );
 }
