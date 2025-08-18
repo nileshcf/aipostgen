@@ -22,18 +22,19 @@ Import repo into Vercel. Add environment variables in Vercel dashboard per `.env
 - For production: enable email verification and RLS policies for any stored tables.
 
 
-
 my-linkedin-ai/
 ├─ src/
 │  ├─ app/
 │  │  ├─ api/
 │  │  │  ├─ auth/
-│  │  │  │  ├─ register/route.ts
+│  │  │  │  ├─ register/route.ts   <-- updated with emailRedirectTo
 │  │  │  │  ├─ login/route.ts
-│  │  │  │  └─ me/route.ts
+│  │  │  │  ├─ me/route.ts
+│  │  │  │  └─ callback/route.ts   🆕 (optional API version if needed)
 │  │  │  └─ generate/route.ts
 │  │  ├─ (auth)/
-│  │  │  └─ login/page.tsx
+│  │  │  ├─ login/page.tsx
+│  │  │  ├─ callback/page.tsx      🆕 (email confirmation landing page)
 │  │  ├─ (app)/
 │  │  │  └─ dashboard/page.tsx
 │  │  ├─ layout.tsx
@@ -54,4 +55,5 @@ my-linkedin-ai/
 ├─ tailwind.config.ts
 ├─ postcss.config.js
 ├─ .env.local.example
+│     └─ add: NEXT_PUBLIC_SITE_URL=http://localhost:3000   🆕
 └─ README.md
