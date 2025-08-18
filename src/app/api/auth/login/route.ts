@@ -30,10 +30,31 @@ export async function POST(req: Request) {
     }
 
     console.log("[Auth/Login] User signed in successfully:", data.user?.id);
-    return NextResponse.json(
+
+    // ✅ Create a response object
+    const res = NextResponse.json(
       { user: data.user, session: data.session },
       { status: 200 }
     );
+
+    // ✅ Set cookie with access token
+    if (data.session) {
+      res.cookies.set("sb-access-token", data.session.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+      });
+
+      res.cookies.set("sb-refresh-token", data.session.refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+
+    return res;
   } catch (err: any) {
     console.error("[Auth/Login] Unexpected error:", err);
     return NextResponse.json(
