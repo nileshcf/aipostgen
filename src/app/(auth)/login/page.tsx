@@ -57,14 +57,14 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-br from-white via-neutral-100 to-neutral-200">
       {/* Logo / Brand */}
-      <div className="text-4xl font-bold bg-gradient-to-r from-black via-gray-700 to-black bg-clip-text text-transparent">
+      <div className="text-4xl font-bold bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent">
         MyBrand
       </div>
 
       {/* Glassmorphic Card */}
       <div className="w-full max-w-md mt-8 p-6 rounded-2xl shadow-xl backdrop-blur-lg bg-white/60 border border-white/30">
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-black via-gray-700 to-black bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent">
             Welcome Back
           </h2>
           <p className="text-center text-sm text-neutral-600">
@@ -93,7 +93,7 @@ export default function AuthPage() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={onLogin}
-              className="rounded-lg bg-gradient-to-r from-black via-gray-900 to-black px-6 py-2 text-white font-medium hover:opacity-80 transition disabled:opacity-50"
+              className="rounded-lg bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 px-6 py-2 text-white font-medium shadow-md hover:opacity-90 transition disabled:opacity-50"
               disabled={loading}
             >
               {loading ? '…' : 'Login'}
@@ -113,7 +113,7 @@ export default function AuthPage() {
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
           <div className="bg-white/80 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center border border-neutral-200">
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-800 via-black to-gray-700 bg-clip-text text-transparent">
+           <h3 className="text-xl font-semibold bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent">
               Confirm Your Email
             </h3>
             <p className="mt-3 text-sm text-neutral-700">
@@ -122,7 +122,7 @@ export default function AuthPage() {
             </p>
             <button
               onClick={() => setShowConfirm(false)}
-              className="mt-6 w-full rounded-lg bg-gradient-to-r from-black via-gray-900 to-black px-6 py-2 text-white font-medium hover:opacity-80 transition"
+              className="mt-6 w-full rounded-lg bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 px-6 py-2 text-white font-medium shadow-md hover:opacity-90 transition"
             >
               Got it
             </button>

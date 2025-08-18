@@ -2,27 +2,41 @@
 import { motion } from 'framer-motion';
 
 type GlassCardProps = {
-  children?: React.ReactNode;   // <-- allow children
+  children?: React.ReactNode;
   className?: string;
-  title?: string;               // <-- new
-  description?: string;         // <-- new
+  title?: string;
+  description?: string;
+  gradient?: string; // <-- new for gradient titles
 };
 
-export default function GlassCard({ children, className = '', title, description }: GlassCardProps) {
+export default function GlassCard({
+  children,
+  className = '',
+  title,
+  description,
+  gradient = 'from-pink-500 via-purple-500 to-indigo-500',
+}: GlassCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className={`glass p-6 ${className}`}
+      className={`rounded-2xl p-6 shadow-lg border border-gray-200/50 bg-white/70 backdrop-blur-xl ${className}`}
     >
-      {/* If title/desc passed, show them in Apple-style */}
+      {/* Gradient Title */}
       {title && (
-        <h2 className="grad-title text-lg font-semibold mb-1">{title}</h2>
+        <h2
+          className={`bg-gradient-to-r ${gradient} bg-clip-text text-transparent text-xl font-bold mb-2`}
+        >
+          {title}
+        </h2>
       )}
+
+      {/* Subtext */}
       {description && (
-        <p className="text-sm text-neutral-600 mb-4">{description}</p>
+        <p className="text-sm text-gray-600 mb-4">{description}</p>
       )}
+
       {children}
     </motion.div>
   );

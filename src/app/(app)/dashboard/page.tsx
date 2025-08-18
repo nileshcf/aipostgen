@@ -49,7 +49,7 @@ export default function Dashboard() {
 
       {/* Hero Section */}
       <section className="py-16 text-center">
-        <h1 className="text-5xl md:text-6xl font-semibold bg-gradient-to-r from-black via-gray-700 to-black bg-clip-text text-transparent tracking-tight">
+        <h1 className="text-5xl md:text-6xl font-semibold grad-text tracking-tight">
           AI-Powered LinkedIn Post Generator
         </h1>
         <p className="mt-4 text-lg text-neutral-600 max-w-2xl mx-auto">
